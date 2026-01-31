@@ -9,7 +9,7 @@ def move_file(command: str) -> None:
     if cm != "mv":
         return
     if dest.endswith(sep):
-        dest = source
+        path.join(dest, source)
     if sep not in dest:
         rename(source, dest)
         return
