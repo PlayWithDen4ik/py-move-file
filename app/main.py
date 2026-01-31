@@ -1,18 +1,19 @@
-from os import makedirs, remove
+from os import makedirs, remove, rename, path
 
 
 def move_file(command: str) -> None:
-    cm, source, dest = command.split()
+    command_split = command.split()
+    if len(command_split) != 3:
+        return
+    cm, source, dest = command_split
     if cm != "mv":
         return
-    try:
-        with open(source, "r") as file1, open(dest, "w") as file2:
-            file2.write(file1.read())
-            remove(source)
-    except FileNotFoundError:
-        makedirs("/".join(dest.split("/")[:-1]), exist_ok=True)
-        with open(source, "r") as file1, open(dest, "w") as file2:
-            file2.write(file1.read())
-            remove(source)
-    else:
+    if dest[-1] == ["/"]:
+        dest = source
+    if "/" not in dest:
+        rename(source, dest)
         return
+    makedirs(path.join(path.dirname(dest)), exist_ok=True)
+    with open(source, "r") as file1, open(dest, "w") as file2:
+        file2.write(file1.read())
+        remove(source)
