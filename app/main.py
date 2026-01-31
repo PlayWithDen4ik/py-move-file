@@ -1,4 +1,4 @@
-from os import makedirs, remove, rename, path
+from os import makedirs, remove, rename, path, sep
 
 
 def move_file(command: str) -> None:
@@ -8,9 +8,9 @@ def move_file(command: str) -> None:
     cm, source, dest = command_split
     if cm != "mv":
         return
-    if dest[-1] == ["/"]:
+    if dest.endswith(sep):
         dest = source
-    if "/" not in dest:
+    if sep not in dest:
         rename(source, dest)
         return
     makedirs(path.join(path.dirname(dest)), exist_ok=True)
